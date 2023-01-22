@@ -7,6 +7,8 @@ import { RootState } from "State/Store";
 import { HexKey, RawEvent, u256, UserMetadata } from "Nostr";
 import { bech32ToHex } from "Util"
 import { DefaultRelays, HashtagRegex } from "Const";
+import { useEffect } from "react";
+import { NIP42AuthChallenge, NIP42AuthResponse } from "Nostr/Auth";
 
 declare global {
     interface Window {
