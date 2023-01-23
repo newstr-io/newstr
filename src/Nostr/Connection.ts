@@ -346,6 +346,10 @@ export default class Connection {
     }
 
     _SendJson(obj: any) {
+        if(!this.Authed && this.AwaitingAuth.size > 0) {
+            this.Pending.push(obj);
+            return;
+        }
         if (this.Socket?.readyState !== WebSocket.OPEN) {
             this.Pending.push(obj);
             return;
