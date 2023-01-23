@@ -17,6 +17,7 @@ import useLoginFeed from "Feed/LoginFeed";
 import { totalUnread } from "Pages/MessagesPage";
 import { SearchRelays } from 'Const';
 import useEventPublisher from "Feed/EventPublisher";
+import { NIP42AuthChallenge, NIP42AuthResponse } from "Nostr/Auth";
 
 export default function Layout() {
     const dispatch = useDispatch();
@@ -37,6 +38,15 @@ export default function Layout() {
 
     useEffect(() => {
         if (relays) {
+            const nip42AuthEvent = async (event: NIP42AuthChallenge) => {
+                if(event.challenge && event.relay) {
+                    const signedEvent = await pub.nip42Auth(event.challenge, event.relay);
+                    const response = new NIP42AuthResponse(event.challenge, signedEvent);
+                    window.dispatchEvent(response);
+                }
+            }
+            window.addEventListener("nip42auth", nip42AuthEvent)
+
             for (let [k, v] of Object.entries(relays)) {
                 System.ConnectToRelay(k, v);
             }
@@ -44,6 +54,10 @@ export default function Layout() {
                 if (!relays[k] && !SearchRelays.has(k)) {
                     System.DisconnectRelay(k);
                 }
+            }
+
+            return () => {
+                window.removeEventListener("nip42auth", nip42AuthEvent)
             }
         }
     }, [relays]);
