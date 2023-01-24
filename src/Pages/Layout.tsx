@@ -127,7 +127,7 @@ export default function Layout() {
     return (
         <div className="page">
             <header>
-                <div className="logo" onClick={() => navigate("/")}>Snort</div>
+                <div className="logo" onClick={() => navigate("/")}>THEIRC</div>
                 <div>
                     <div className={`btn btn-rnd mr10`} onClick={(e) => navigate("/search")}>
                         <FontAwesomeIcon icon={faSearch} size="xl" />
