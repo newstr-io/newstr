@@ -67,8 +67,8 @@ import { TRANSFORMERS } from "@lexical/markdown";
     return (
       <span className={editable ? 'rta ' + className : className}>
         <LexicalComposer initialConfig={initialConfig}>
-          <HistoryPlugin />
-          <HashtagPlugin />
+          {/* <HistoryPlugin /> */}
+          {/* <HashtagPlugin /> */}
           <AutoEmbedPlugin 
             onFocus={onFocus}
             tags={tags}
@@ -91,6 +91,7 @@ import { TRANSFORMERS } from "@lexical/markdown";
       if (match === null) return match;
 
       const fullMatch = match[0];
+      console.log('@match', fullMatch)
       return {
         mention: true,
         index: match.index,
@@ -107,11 +108,10 @@ import { TRANSFORMERS } from "@lexical/markdown";
         /(?:[a-z]+:)?\/\/[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,12}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/;
 
         const match = URL_MATCHER.exec(text);
-        if (match === null) return match
+        if (match === null) return null;
 
-        const fullMatch = match[0];
-        console.log('full Match', text)
         try {
+          const fullMatch = match[0];
           const url = new URL(fullMatch.startsWith('http') ? fullMatch : `https://${fullMatch}`)
           const extension = FileExtensionRegex.test(url.pathname.toLowerCase()) && RegExp.$1;
           switch(extension) {
@@ -155,6 +155,7 @@ import { TRANSFORMERS } from "@lexical/markdown";
             }
           }
         }catch(error) {
+          console.error('matcher error', error)
           return null
         }
     },

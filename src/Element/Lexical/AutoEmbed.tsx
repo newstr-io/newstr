@@ -14,11 +14,13 @@ import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
 import {mergeRegister} from '@lexical/utils';
 import { $createEditableImageNode, $createImageNode, EditableImageNode, ImageNode } from './Image';
 import { $createVideoNode, VideoNode } from './Video';
-import { $createMentionNode, MentionNode } from './Mention';
+import { $createEditMentionNode, $createMentionNode, EditMentionNode, MentionNode } from './Mention';
 import Tag from 'Nostr/Tag';
 import { MetadataCache } from 'Db/User';
 import { hexToBech32 } from 'Util';
 import { registerMarkdown } from './Markdown';
+import { stringify } from 'querystring';
+import { is } from 'immer/dist/internal';
 
 
 /**
@@ -115,17 +117,22 @@ function handleLinkCreation(
       }
       switch(isValid) {
         case match.mention: {
-          const textNode = lexical.$createTextNode(match.text);
-          const linkNode = $createLinkNode(`#${match.text}`, match.attributes);
-          textNode.setFormat(linkTextNode.getFormat());
-          textNode.setDetail(linkTextNode.getDetail());
-          linkNode.append(textNode);
-          linkTextNode.replace(linkNode);
+          if(isEditable) {
+            // const editMention = $createEditMentionNode(match.text) 
+            const textNode = lexical.$createTextNode(match.textslice(1));
+            const linkNode = $createLinkNode(`#${match.text}`, match.attributes);
+            textNode.setFormat(linkTextNode.getFormat());
+            textNode.setDetail(linkTextNode.getDetail());
+            linkNode.append(textNode);
+            linkTextNode.replace(textNode);
+          } else {
+            linkTextNode.replace(lexical.$createTextNode(match.text))
+          }
           break
         }
         case match.image: {
           const url = new URL(match.url)
-          if(isEditable) {
+          if(isEditable === true) {
             linkTextNode.replace($createEditableImageNode(url.toString()))
           } else {
             linkTextNode.replace($createImageNode(url.toString()))
@@ -336,6 +343,7 @@ export default AutoEmbed;
 
 export const REGISTER_AUTO_NODES = [
   MentionNode,
+  EditMentionNode,
   LinkNode,
   ImageNode,
   EditableImageNode,
