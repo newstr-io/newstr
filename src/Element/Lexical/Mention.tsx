@@ -43,7 +43,7 @@ export class MentionNode extends DecoratorNode<ReactNode> {
 }
 
 export class EditMentionNode extends MentionNode {
-  __search: string;
+  __search?: string;
   __users: Map<string, MetadataCache>
   static getType(): string {
     return 'edit-mention';
@@ -53,14 +53,24 @@ export class EditMentionNode extends MentionNode {
     return new EditMentionNode(node.__search, node.__key);
   }
 
-  constructor(search:string, key?: NodeKey) {
-    super('', key);
-    this.__users = new Map();
+  constructor(search?:string, pubKey?: string, users?: Map<string, MetadataCache>, key?: NodeKey) {
+    super('' ?? pubKey, key);
+    this.__users = users ? users : new Map();
     this.__search = search;
   }
 
   updateDOM(): false {
     return false;
+  }
+
+  static importJSON(serializedNode: SerializedMentionNode): EditMentionNode {
+    return new EditMentionNode()
+  }
+
+  exportJSON(): SerializedMentionNode {
+    return {
+      pubKey: this.__pubKey,
+    } as SerializedMentionNode;
   }
 
   decorate(): ReactNode {
