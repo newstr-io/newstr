@@ -1,5 +1,6 @@
 import ProfilePreview from "Element/ProfilePreview";
 import useRelayState from "Feed/RelayState";
+import ZapButton from "Element/ZapButton";
 import { System } from "Nostr/System";
 import { useDispatch } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
@@ -21,7 +22,11 @@ const RelayInfo = () => {
             <div className="card">
                 <h3>{stats?.info?.name}</h3>
                 <p>{stats?.info?.description}</p>
-
+                {stats?.info?.payment && (<div className="flex">
+                    <h4 className="f-grow">Payment</h4>
+                    <div className="mr10">{stats.info.payment.description}:</div>
+                    <ZapButton svc={stats.info.payment.lnurlp} />
+                </div>)}
                 {stats?.info?.pubkey && (<>
                     <h4>Owner</h4>
                     <ProfilePreview pubkey={parseId(stats.info.pubkey)} />

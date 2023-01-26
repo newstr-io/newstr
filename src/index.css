@@ -1,45 +1,47 @@
 @import url('https://fonts.googleapis.com/css2?family=Be+Bietnam+Pro:wght@400;600;700&display=swap');
 
 :root {
-  --bg-color: #000;
-  --font-color: #FFF;
-  --font-secondary-color: #555;
+  --bg-color: #222;
+  --font-color: #CCCCCC;
+  --font-secondary-color: #FFC045;
   --font-tertiary-color: #666;
   --font-size: 16px;
   --font-size-small: 14px;
   --font-size-tiny: 12px;
   --modal-bg-color: rgba(0, 0, 0, 0.8);
-  --note-bg: #0C0C0C;
-  --highlight: #8B5CF6;
+  --note-bg: #2B2B2B;
+  --highlight: #FFC045;
+
   --error: #FF6053;
   --success: #2AD544;
 
   --gray-superlight: #EEE;
   --gray-light: #999;
   --gray-medium: #666;
-  --gray: #333;
-  --gray-secondary: #222;
-  --gray-tertiary: #444;
+  --gray: #444;
+  --gray-secondary: #111;
+  --gray-tertiary: #555;
   --gray-dark: #2B2B2B;
   --gray-superdark: #171717;
-  --gray-gradient: linear-gradient(to bottom right, var(--gray-superlight), var(--gray), var(--gray-light));
-  --snort-gradient: linear-gradient(180deg, #FFC7B7 0%, #4F1B73 100%);
-  --nostrplebs-gradient: linear-gradient(to bottom right, #ff3cac, #2b86c5);
-  --strike-army-gradient: linear-gradient(to bottom right, #CCFF00, #a1c900);
+
+  --gray-gradient: linear-gradient(to bottom right, var(--superlight), var(--highlight), var(--gray-light));
+  --snort-gradient: linear-gradient(180deg, #FFC045 0%, #663399 100%);
+  --nostrplebs-gradient: linear-gradient(to bottom right, #FFC045, #663399);
+  --strike-army-gradient: linear-gradient(to bottom right, #FFC045, #663399);
 }
 
 html.light {
   --bg-color: #F1F1F1;
   --font-color: #57534E;
-  --font-secondary-color: #B9B9B9;
+  --font-secondary-color: #FFC045;
   --font-tertiary-color: #F3F3F3;
 
-  --highlight-light: #16AAC1;
-  --highlight: #0284C7;
-  --highlight-dark: #0A52B5;
-  --modal-bg-color: rgba(240, 240, 240, 0.8);
+  --highlight-light: #ffe3ab;
+  --highlight: #FFC045;
+  --highlight-dark: #f2af2a;
+  --modal-bg-color: rgba(0, 0, 0, 0.8);
 
-  --note-bg: white;
+  --note-bg: #fafafafa;
 
   --gray: #CCC;
   --gray-secondary: #DDD;
@@ -113,7 +115,7 @@ button {
   cursor: pointer;
   padding: 6px 12px;
   font-weight: bold;
-  color: white;
+  color: var(--bg-color);
   font-size: var(--font-size);
   background-color: var(--highlight);
   border: none;

@@ -5,5 +5,9 @@ export interface RelayInfo {
     contact?: string,
     supported_nips?: number[],
     software?: string,
-    version?: string
+    version?: string,
+    payment?: {
+        lnurlp?: string,
+        description?: string
+    }
 }

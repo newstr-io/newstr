@@ -17,6 +17,9 @@ import useLoginFeed from "Feed/LoginFeed";
 import { totalUnread } from "Pages/MessagesPage";
 import { SearchRelays } from 'Const';
 import useEventPublisher from "Feed/EventPublisher";
+import { DefaultRelays } from "Const";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLinesLeaning } from "@fortawesome/free-solid-svg-icons";
 
 export default function Layout() {
     const dispatch = useDispatch();
@@ -33,7 +36,12 @@ export default function Layout() {
 
     useMemo(() => {
         System.nip42Auth = pub.nip42Auth
+        // System.pushInvoiceToFeed 
     },[pub])
+
+    // DefaultRelays.forEach((settings, address) => {
+    //     System.ConnectToRelay(address, settings)
+    // })
 
     useEffect(() => {
         System.nip42Auth = pub.nip42Auth
@@ -117,7 +125,7 @@ export default function Layout() {
     return (
         <div className="page">
             <header>
-                <div className="logo" onClick={() => navigate("/")}>Newstr</div>
+                <div className="logo" onClick={() => navigate("/")}><FontAwesomeIcon icon={faLinesLeaning}/>Newstr</div>
                 <div>
                     <div className={`btn btn-rnd mr10`} onClick={(e) => navigate("/search")}>
                         <FontAwesomeIcon icon={faSearch} size="xl" />

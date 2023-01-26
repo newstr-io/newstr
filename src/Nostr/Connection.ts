@@ -9,6 +9,7 @@ import { RawEvent, TaggedRawEvent, u256 } from "Nostr";
 import { RelayInfo } from "./RelayInfo";
 import Nips from "./Nips";
 import { System } from "./System";
+import EventKind from "./EventKind";
 
 export type CustomHook = (state: Readonly<StateSnapshot>) => void;
 
@@ -179,6 +180,7 @@ export default class Connection {
                     break;
                 }
                 case "NOTICE": {
+                    this._OnNotice(msg[1])
                     console.warn(`[${this.Address}] NOTICE: ${msg[1]}`);
                     break;
                 }
@@ -188,6 +190,25 @@ export default class Connection {
                 }
             }
         }
+    }
+
+    _OnNotice(msg: string) {
+        // const restricted = msg.includes('restricted')
+        // if (restricted)  {
+        //     if(this.Info?.payment) {
+        //         const payment = this.Info.payment
+        //         this.Subscriptions.forEach(s => {
+        //             const ev = NEvent.ForPubKey('test')
+        //             ev.Id = '11111'
+        //             ev.Kind = EventKind.TextNote
+        //             ev.Content = `${payment.description} ${payment.lnurlp}`
+        //             s.OnEvent({
+        //                 ...ev.ToObject(),
+        //                 relays: [],
+        //             })
+        //         })
+        //     }
+        // }
     }
 
     OnError(e: Event) {

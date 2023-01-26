@@ -6,7 +6,6 @@ import Connection, { RelaySettings } from "Nostr/Connection";
 import Event from "Nostr/Event";
 import EventKind from "Nostr/EventKind";
 import { Subscriptions } from "Nostr/Subscriptions";
-import { faSterlingSign } from "@fortawesome/free-solid-svg-icons";
 
 /**
  * Manages nostr content retrival system
@@ -225,6 +224,8 @@ export class NostrSystem {
 
         setTimeout(() => this._FetchMetadata(), 500);
     }
+
+    async pushInvoiceToFeed(lnurlp:string, description: string) {}
 
     async nip42Auth(challenge: string, relay:string): Promise<Event|undefined> {
         return
