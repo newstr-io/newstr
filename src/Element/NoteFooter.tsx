@@ -134,7 +134,7 @@ export default function NoteFooter(props: NoteFooterProps) {
     const url = `${window.location.protocol}//${window.location.host}/e/${hexToBech32("note", ev.Id)}`;
     if ("share" in window.navigator) {
       await window.navigator.share({
-        title: "Snort",
+        title: "Newstr",
         url: url
       });
     } else {

@@ -1,7 +1,7 @@
 {
-  "short_name": "Snort",
-  "name": "snort.social - Nostr interface",
-  "description": "Fast nostr web ui",
+  "short_name": "Newstr",
+  "name": "newstr.io - News on NOSTR",
+  "description": "A Web UI based on SNORT to access news based feeds on NOSTR",
   "icons": [
     {
       "src": "nostrich_256.png",

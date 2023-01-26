@@ -56,6 +56,7 @@ const DonatePage = () => {
     
     return (
         <div className="main-content m5">
+            <h3>This client is bsed on Snort</h3>
             <h2>Help fund the development of Snort</h2>
             <p>
                 Snort is an open source project built by passionate people in their free time

@@ -18,7 +18,7 @@ export default async function VoidUpload(file: File | Blob, filename: string) {
             "V-Content-Type": file.type,
             "V-Filename": filename,
             "V-Full-Digest": secp.utils.bytesToHex(new Uint8Array(digest)),
-            "V-Description": "Upload from https://snort.social",
+            "V-Description": "Upload from https://newstr.io",
             "V-Strip-Metadata": "true"
         }
     });

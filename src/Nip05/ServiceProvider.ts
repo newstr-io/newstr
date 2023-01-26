@@ -65,7 +65,7 @@ export class ServiceProvider {
             name: handle,
             domain,
             pk: pubkey,
-            ref: "snort"
+            ref: "newstr"
         });
     }
 
