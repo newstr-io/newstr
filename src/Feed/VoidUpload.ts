@@ -9,7 +9,7 @@ export default async function VoidUpload(file: File | Blob, filename: string) {
     const buf = await file.arrayBuffer();
     const digest = await crypto.subtle.digest("SHA-256", buf);
 
-    let req = await fetch(`${VoidCatHost}/upload`, {
+    let req = await fetch(`https://media.13x.sh/upload`, {
         mode: "cors",
         method: "POST",
         body: buf,
