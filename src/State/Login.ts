@@ -123,7 +123,7 @@ const InitState = {
         confirmReposts: false,
         showDebugMenus: false,
         autoShowLatest: false,
-        useLexical: true,
+        useLexical: false,
     }
 } as LoginStore;
 
