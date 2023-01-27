@@ -40,6 +40,7 @@ export interface LNURLTipProps {
     invoice?: string, // shortcut to invoice qr tab
     title?: string,
     notice?: string
+    persistComment?: string
 }
 
 export default function LNURLTip(props: LNURLTipProps) {
@@ -57,10 +58,14 @@ export default function LNURLTip(props: LNURLTipProps) {
 
     useEffect(() => {
         if (show && !props.invoice) {
+            console.log('set persist', props.persistComment)
             loadService()
-                .then(a => setPayService(a!))
+                .then(a => {
+                    setPayService(a!)
+                })
                 .catch(() => setError("Failed to load LNURL service"));
         } else {
+            console.log('set persist', props.persistComment)
             setPayService(undefined);
             setError(undefined);
             setInvoice(props.invoice ? { pr: props.invoice } : undefined);
@@ -72,12 +77,27 @@ export default function LNURLTip(props: LNURLTipProps) {
 
     const serviceAmounts = useMemo(() => {
         if (payService) {
-            let min = (payService.minSendable ?? 0) / 1000;
+                      let min = (payService.minSendable ?? 0) / 1000;
             let max = (payService.maxSendable ?? 0) / 1000;
             return amounts.filter(a => a >= min && a <= max);
         }
         return [];
     }, [payService]);
+
+    useEffect(() => {
+        if(invoice) return
+        if (payService && 
+            payService.minSendable &&
+            payService.minSendable / 1000 > 0 &&
+            payService.minSendable === payService.maxSendable
+        ) {
+            setAmount(payService.minSendable / 1000)
+            if(props.persistComment) {
+                setComment(props.persistComment)
+                loadInvoice()
+            }
+        }
+    },[payService, props.persistComment])
 
     const metadata = useMemo(() => {
         if (payService) {
@@ -185,10 +205,24 @@ export default function LNURLTip(props: LNURLTipProps) {
             <>
                 <div className="f-ellipsis mb10">{metadata?.description ?? service}</div>
                 <div className="flex">
-                    {(payService?.commentAllowed ?? 0) > 0 ?
-                        <input type="text" placeholder="Comment" className="mb10 f-grow" maxLength={payService?.commentAllowed} onChange={(e) => setComment(e.target.value)} /> : null}
+                    {(payService?.commentAllowed ?? 0) > 0 && (
+                        <input 
+                            type="text"
+                            placeholder="Comment"
+                            className="mb10 f-grow"
+                            maxLength={payService?.commentAllowed} 
+                            value={props.persistComment || comment}
+                            readOnly={props.persistComment ? true : false}
+                            onChange={(e) => setComment(e.target.value)}
+                        />
+                    )}
                 </div>
                 <div className="mb10">
+                    {amount && (
+                        <span className="sat-amount active" key={amount} onClick={() => selectAmount(amount)}>
+                            {amount.toLocaleString()}
+                        </span>
+                    )}
                     {serviceAmounts.map(a => <span className={`sat-amount ${amount === a ? "active" : ""}`} key={a} onClick={() => selectAmount(a)}>
                         {a.toLocaleString()}
                     </span>)}

@@ -229,6 +229,11 @@ export default class Connection {
         this._UpdateState();
     }
 
+    TestAuth() {
+        let auth = ["AUTH"]
+        this._SendJson(auth);
+    }
+
     /**
      * Send event on this connection and wait for OK response
      */
