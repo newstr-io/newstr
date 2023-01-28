@@ -46,6 +46,11 @@ export interface UserPreferences {
      * use Lexical editor/note renderer
      */
     useLexical: boolean
+
+    /**
+     * use Lexical editor/note renderer
+     */
+    renderLinks: boolean
 }
 
 export interface LoginStore {
@@ -124,6 +129,7 @@ const InitState = {
         showDebugMenus: false,
         autoShowLatest: false,
         useLexical: false,
+        renderLinks: true,
     }
 } as LoginStore;
 
