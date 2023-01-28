@@ -64,3 +64,40 @@
     width: -webkit-fill-available;
     aspect-ratio: 16 / 9;
 }
+
+.link-metadata {
+    cursor: default;
+    margin: 10px 0px;
+}
+
+.link-metadata .link-title {
+    font-size: 1.4em;
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+.link-url {
+    text-align: right;
+    font-size: .8em;
+    text-decoration: underline;
+    font-style: italic;
+}
+.link-metadata .link-description {
+    border-left: 3px solid var(--font-tertiary-color);
+    padding: 10px;
+    font-style: italic;
+    line-height: 1.2em;
+}
+span.info-circle {
+    margin-right: 5px;
+}
+.link-url a {
+    color: var(--font-color);
+}
+
+.link-image img {
+    object-fit: cover;
+    object-position: top center;
+    width: 100%;
+    max-height: 350px;
+}

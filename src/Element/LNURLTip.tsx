@@ -58,14 +58,12 @@ export default function LNURLTip(props: LNURLTipProps) {
 
     useEffect(() => {
         if (show && !props.invoice) {
-            console.log('set persist', props.persistComment)
             loadService()
                 .then(a => {
                     setPayService(a!)
                 })
                 .catch(() => setError("Failed to load LNURL service"));
         } else {
-            console.log('set persist', props.persistComment)
             setPayService(undefined);
             setError(undefined);
             setInvoice(props.invoice ? { pr: props.invoice } : undefined);
