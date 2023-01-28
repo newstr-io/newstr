@@ -194,8 +194,6 @@ export class NostrSystem {
         }
 
         if (missing.size > 0) {
-            console.debug("Wants profiles: ", missing);
-
             let sub = new Subscriptions();
             sub.Id = `profiles:${sub.Id}`;
             sub.Kinds = new Set([EventKind.SetMetadata]);
