@@ -37,7 +37,6 @@ export default function RootPage() {
        "ea5b87bc06113efdd22b3881b1f0ef44ee82b651eadb21c6c9807010ed9e68aa",
        "c22ab8fd0cedcdac7e491de3401964eeb6962becf5c3b65760e3ea3009416023",
        "56e265a2b2e54584afd054419724b539155ba71d4ce236c26fffc7c8e4c1474a",
-
     ]} : { type: "pubkey", items: follows };
     return (
         <>
