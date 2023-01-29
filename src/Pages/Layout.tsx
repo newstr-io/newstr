@@ -3,7 +3,6 @@ import { useEffect, useMemo } from "react"
 import { useDispatch, useSelector } from "react-redux";
 import { Outlet, useNavigate } from "react-router-dom";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Envelope from "Icons/Envelope"
 import Bell from "Icons/Bell"
 
