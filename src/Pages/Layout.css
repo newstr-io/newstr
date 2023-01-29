@@ -49,7 +49,10 @@ header .pfp .avatar-wrapper {
 .header-actions {
   display: flex;
   flex-direction: row;
+  justify-items: center;
+  align-items: center;
 }
+
 
 .header-actions .btn-rnd {
   position: relative;

@@ -103,7 +103,7 @@ export default function Layout() {
         const unreadNotifications = notifications?.filter(a => (a.created_at * 1000) > readNotifications).length;
         const unreadDms = key ? totalUnread(dms, key) : 0;
         return (
-            <div className="header-actions">
+            <div className="flex">
                 <div className={`btn btn-rnd${unreadDms === 0 ? " mr10" : ""}`} onClick={(e) => navigate("/messages")}>
                     <Envelope />
                     {unreadDms > 0 && (<span className="has-unread"></span>)}
@@ -124,7 +124,7 @@ export default function Layout() {
         <div className="page">
             <header>
                 <div className="logo" onClick={() => navigate("/")}><FontAwesomeIcon icon={faLinesLeaning}/>Newstr</div>
-                <div>
+                <div className="header-actions">
                     <div className={`btn btn-rnd mr10`} onClick={(e) => navigate("/search")}>
                         <FontAwesomeIcon icon={faSearch} size="xl" />
                     </div>

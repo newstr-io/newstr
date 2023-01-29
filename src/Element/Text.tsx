@@ -1,5 +1,5 @@
 import './Text.css'
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useMemo, useCallback } from "react";
 import { Link } from "react-router-dom";
 import ReactMarkdown from "react-markdown";
 import { visit, SKIP } from "unist-util-visit";
@@ -20,9 +20,8 @@ import { RootState } from 'State/Store';
 import { UserPreferences } from 'State/Login';
 import  SoundCloudEmbed from 'Element/SoundCloudEmded'
 import MixCloudEmbed from './MixCloudEmbed';
-import PreviewMenu from './PreviewMenu';
-import Editor from './Lexical';
 import { RenderedLink } from './RenderedLink';
+import Editor from './Lexical';
 
 function transformHttpLink(a: string, pref: UserPreferences) {
     try {
@@ -213,6 +212,16 @@ export interface TextProps {
 }
 
 export default function Text({ content, tags, users }: TextProps) {
+    const pref = useSelector<RootState, UserPreferences>(s => s.login.preferences);
+    if(pref.useLexical) {
+        return <Editor editable={false} content={content} tags={tags} users={users} /> 
+    }
+
+    return <DefaultText content={content} tags={tags} users={users} />
+    
+}
+
+function DefaultText({content, tags, users}: TextProps) {
     const pref = useSelector<RootState, UserPreferences>(s => s.login.preferences);
     const components = useMemo(() => {
         return {

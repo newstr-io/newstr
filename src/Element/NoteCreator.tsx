@@ -11,7 +11,7 @@ import VoidUpload from "Feed/VoidUpload";
 import { FileExtensionRegex, VoidCatHost } from "Const";
 import Textarea from "Element/Textarea";
 import Modal from "Element/Modal";
-import Event, { default as NEvent } from "Nostr/Event";
+import { default as NEvent } from "Nostr/Event";
 import Editor from "./Lexical";
 import Tag from "Nostr/Tag";
 import { useSelector } from "react-redux";
