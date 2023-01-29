@@ -77,6 +77,15 @@ const PreferencesPage = () => {
                     <input type="checkbox" checked={perf.useLexical} onChange={e => dispatch(setPreferences({ ...perf, useLexical: e.target.checked }))} />
                 </div>
             </div>
+            <div className="card flex">
+                <div className="flex f-col f-grow">
+                    <div>Render Metadata</div>
+                    <small>Experimental render link as a metadata (opengraph, etc) object</small>
+                </div>
+                <div>
+                    <input type="checkbox" checked={perf.renderLinks} onChange={e => dispatch(setPreferences({ ...perf, renderLinks: e.target.checked }))} />
+                </div>
+            </div>
         </div>
     )
 }
