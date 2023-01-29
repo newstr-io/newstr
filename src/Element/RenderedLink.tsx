@@ -36,15 +36,11 @@ interface LinkMetadata {
 
 export function RenderedLink({ url }:{url: string}) {
 
-  const renderLinks = useSelector<RootState, boolean>(s => s.login.preferences.renderLinks);
-  if(!renderLinks) {
-    return <a key={url} href={url} onClick={(e) => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">{url}</a>
-  }
-
   const [metadata, setMd] = useState<LinkMetadata>()
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [image,setImage] = useState<Image>()
+  const renderLinks = useSelector<RootState, boolean>(s => s.login.preferences.renderLinks);
 
   const setMetadata = (data:LinkMetadata) => {
       if(data.title) {
@@ -67,7 +63,6 @@ export function RenderedLink({ url }:{url: string}) {
       setMd(data)
   }
 
-
   useEffect(() => {
       const getMetadata = async (url: string) => {
           if(metadata) return
@@ -81,6 +76,10 @@ export function RenderedLink({ url }:{url: string}) {
       }
       getMetadata(url)
   },[url])
+
+  if(!renderLinks) {
+    return <a key={url} href={url} onClick={(e) => e.stopPropagation()} target="_blank" rel="noreferrer" className="ext">{url}</a>
+  }
 
   return (metadata && (description || image?.url) ? (
       <div className="link-metadata" onClick={(e) => e.stopPropagation()}>

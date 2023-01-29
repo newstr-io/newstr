@@ -4,25 +4,22 @@
  * This source code is licensed under the MIT license found in the
  * LICENSE file in the root directory of this source tree.
  */
-import {useEffect, useMemo, useState} from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import * as lexical from 'lexical';
 
 import {
-  $isLinkNode, $createLinkNode, LinkNode 
+  $isLinkNode, $createLinkNode, LinkNode
 } from '@lexical/link';
-import {useLexicalComposerContext} from '@lexical/react/LexicalComposerContext';
-import {mergeRegister} from '@lexical/utils';
+import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { mergeRegister } from '@lexical/utils';
 import { $createEditableImageNode, $createImageNode, EditableImageNode, ImageNode } from './Image';
 import { $createVideoNode, VideoNode } from './Video';
-import { $createEditMentionNode, $createMentionNode, EditMentionNode, MentionNode } from './Mention';
+import { $createMentionNode, EditMentionNode, MentionNode } from './Mention';
 import Tag from 'Nostr/Tag';
-import { MetadataCache } from 'Db/User';
 import { hexToBech32 } from 'Util';
-import { registerMarkdown } from './Markdown';
-import { stringify } from 'querystring';
-import { is } from 'immer/dist/internal';
 import { useLiveQuery } from 'dexie-react-hooks';
 import { db } from 'Db';
+import { MetadataCache } from 'State/Users';
 
 
 /**
@@ -33,7 +30,7 @@ import { db } from 'Db';
  *
  */
 
-function findFirstMatch(text: string, matchers: Array<(text:string) => any>) {
+function findFirstMatch(text: string, matchers: Array<(text: string) => any>) {
   for (let i = 0; i < matchers.length; i++) {
     const match = matchers[i](text);
 
@@ -92,10 +89,10 @@ function isContentAroundIsValid(matchStart: number, matchEnd: number, text: stri
 
 function handleLinkCreation(
   node: lexical.LexicalNode,
-  matchers: Array<(text:string)=> any>,
+  matchers: Array<(text: string) => any>,
   tags: Array<Tag>,
   isEditable: boolean,
-  query?: (text:string) => void,
+  query?: (text: string) => void,
   users?: Array<MetadataCache>,
 ) {
   const nodeText = node.getTextContent();
@@ -103,7 +100,7 @@ function handleLinkCreation(
   let invalidMatchEnd = 0;
   let remainingTextNode = node;
   let match;
-  
+
   let somethinghere = ''
 
   while ((match = findFirstMatch(text, matchers)) && match !== null) {
@@ -118,12 +115,12 @@ function handleLinkCreation(
       if (invalidMatchEnd + matchStart === 0) {
         [linkTextNode, remainingTextNode] = remainingTextNode.splitText(invalidMatchEnd + matchLength);
       } else {
-        [,linkTextNode, remainingTextNode] = remainingTextNode.splitText(invalidMatchEnd + matchStart, invalidMatchEnd + matchStart + matchLength);
+        [, linkTextNode, remainingTextNode] = remainingTextNode.splitText(invalidMatchEnd + matchStart, invalidMatchEnd + matchStart + matchLength);
       }
-      switch(isValid) {
+      switch (isValid) {
         case match.mention: {
-          if(isEditable && match.text) {
-            if(query) query(match.text)
+          if (isEditable && match.text) {
+            if (query) query(match.text)
             const textNode = lexical.$createTextNode(match.text);
             const usersText = `[ ${users?.map(u => u.name).join(', ')} ]`
             console.log('remaining text node', remainingTextNode)
@@ -141,7 +138,7 @@ function handleLinkCreation(
         }
         case match.image: {
           const url = new URL(match.url)
-          if(isEditable === true) {
+          if (isEditable === true) {
             linkTextNode.replace($createEditableImageNode(url.toString()))
           } else {
             linkTextNode.replace($createImageNode(url.toString()))
@@ -154,20 +151,20 @@ function handleLinkCreation(
           break;
         }
         case !isNaN(match.tagRefId): {
-          const id:number = match.tagRefId;
+          const id: number = match.tagRefId;
           const ref = tags?.find(a => a.Index === id)
 
-          if(ref) {
-            switch(ref.Key) {
+          if (ref) {
+            switch (ref.Key) {
               case "p": {
                 console.log('should mention', ref)
-                if(ref.PubKey) {
+                if (ref.PubKey) {
                   linkTextNode.replace($createMentionNode(ref.PubKey))
                   break;
                 }
               }
               case "e": {
-                if(ref.Event) {
+                if (ref.Event) {
                   const eText = hexToBech32("note", ref.Event!).substring(0, 12);
                   const textNode = lexical.$createTextNode(eText);
                   const linkNode = $createLinkNode(`/note/${ref.Event}`, match.attributes);
@@ -179,7 +176,7 @@ function handleLinkCreation(
                 }
               }
               case "t": {
-                if(ref.Hashtag) {
+                if (ref.Hashtag) {
                   const textNode = lexical.$createTextNode(ref.Hashtag);
                   const linkNode = $createLinkNode(`/t/${ref.Hashtag}`, match.attributes);
                   textNode.setFormat(linkTextNode.getFormat());
@@ -190,7 +187,7 @@ function handleLinkCreation(
                 }
               }
               default:
-                linkTextNode.replace(lexical.$createTextNode(match.text)) 
+                linkTextNode.replace(lexical.$createTextNode(match.text))
             }
             break;
           }
@@ -213,7 +210,7 @@ function handleLinkCreation(
   }
 }
 
-function handleLinkEdit(linkNode: LinkNode,  matchers: Array<(text:string)=> any>) {
+function handleLinkEdit(linkNode: LinkNode, matchers: Array<(text: string) => any>) {
   // Check children are simple text
   const children = linkNode.getChildren();
   const childrenLength = children.length;
@@ -291,14 +288,14 @@ function replaceWithChildren(node: lexical.ElementNode) {
   return children.map(child => child.getLatest());
 }
 
-interface AutoEmbed{
-  onFocus?: (ev:any) => void;
-  matchers: Array<(text:string)=>any>,
+interface AutoEmbed {
+  onFocus?: (ev: any) => void;
+  matchers: Array<(text: string) => any>,
   tags: Array<Tag>,
 }
 
-function AutoEmbed({ matchers, tags, onFocus }: AutoEmbed):null {
-  const [query,setQuery] = useState('')
+function AutoEmbed({ matchers, tags, onFocus }: AutoEmbed): null {
+  const [query, setQuery] = useState('')
   const [editor] = useLexicalComposerContext();
 
   // Todo, register other nodes or handle them differently
@@ -318,43 +315,43 @@ function AutoEmbed({ matchers, tags, onFocus }: AutoEmbed):null {
     }, [query]);
 
   const registerNodeTransform = (
-    matchers: Array<(text:string)=>any>,
+    matchers: Array<(text: string) => any>,
     tags: Array<Tag>,
     users?: MetadataCache[],
   ) => editor.registerNodeTransform(lexical.TextNode, textNode => {
     console.log('called here', users)
-      const parent = textNode.getParentOrThrow<LinkNode>();
-  
-      if ($isLinkNode(parent)) {
-        handleLinkEdit(parent, matchers);
-      } else if (!$isLinkNode(parent)) {
-        if (textNode.isSimpleText()) {
-          handleLinkCreation(textNode, matchers, tags, editor.isEditable(), setQuery, users);
-        }
-  
-        handleBadNeighbors(textNode);
-      }
-    })
+    const parent = textNode.getParentOrThrow<LinkNode>();
 
-  useEffect(() => mergeRegister(registerNodeTransform(matchers, tags, users)),[ matchers, tags, users])
+    if ($isLinkNode(parent)) {
+      handleLinkEdit(parent, matchers);
+    } else if (!$isLinkNode(parent)) {
+      if (textNode.isSimpleText()) {
+        handleLinkCreation(textNode, matchers, tags, editor.isEditable(), setQuery, users);
+      }
+
+      handleBadNeighbors(textNode);
+    }
+  })
+
+  useEffect(() => mergeRegister(registerNodeTransform(matchers, tags, users)), [matchers, tags, users])
 
   useEffect(() => editor.registerCommand(
     lexical.BLUR_COMMAND,
     () => false,
     lexical.COMMAND_PRIORITY_LOW
-  ),[])
+  ), [])
 
 
   useEffect(() => editor.registerCommand(
     lexical.FOCUS_COMMAND,
     () => {
-      if(onFocus) {
+      if (onFocus) {
         onFocus(true)
       }
       return false
     },
     lexical.COMMAND_PRIORITY_LOW
-  ),[onFocus])
+  ), [onFocus])
 
   return null;
 }

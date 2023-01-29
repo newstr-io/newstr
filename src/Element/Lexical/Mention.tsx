@@ -1,5 +1,5 @@
-import { MetadataCache } from "Db/User";
 import Mention from "Element/Mention";
+import { MetadataCache } from "State/Users";
 import { DecoratorNode, NodeKey, SerializedElementNode, Spread } from "lexical";
 import { ReactNode } from "react";
 

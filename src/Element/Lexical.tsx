@@ -1,29 +1,19 @@
 import "./Lexical.css";
 
 import {LexicalComposer} from '@lexical/react/LexicalComposer';
-import {ReactNode, useEffect, useMemo, useState} from 'react';
+import {ReactNode,  useMemo } from 'react';
 import {HeadingNode} from '@lexical/rich-text'
 import {ListItemNode, ListNode} from '@lexical/list'
 import CustomHashtagNode from './Lexical/Hashtag';
-import { db } from "Db";
 
 import {PlainTextPlugin} from '@lexical/react/LexicalPlainTextPlugin';
-import {MarkdownShortcutPlugin} from '@lexical/react/LexicalMarkdownShortcutPlugin';
-import {HistoryPlugin} from '@lexical/react/LexicalHistoryPlugin';
 import {ContentEditable} from '@lexical/react/LexicalContentEditable';
-import {HashtagPlugin} from '@lexical/react/LexicalHashtagPlugin';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary'; 
 import { editorState } from './Lexical/Markdown';
 import AutoEmbedPlugin, { REGISTER_AUTO_NODES } from './Lexical/AutoEmbed';
 import Tag from 'Nostr/Tag';
-import { MetadataCache } from 'Db/User';
-import { FileExtensionRegex, MentionRegex, UrlRegex } from 'Const';
-import { useLexicalComposerContext } from "@lexical/react/LexicalComposerContext";
-import { BLUR_COMMAND, COMMAND_PRIORITY_LOW, FOCUS_COMMAND } from "lexical";
-import { TRANSFORMERS } from "@lexical/markdown";
-import { useLiveQuery } from "dexie-react-hooks";
-
-import {CustomLinkNode, validateUrl} from './Lexical/Link'
+import { FileExtensionRegex } from 'Const';
+import { MetadataCache } from "State/Users";
 
   // Catch any errors that occur during Lexical updates and log them
   // or throw them as needed. If you don't throw them, Lexical will
